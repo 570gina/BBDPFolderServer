@@ -32,11 +32,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jmma.annotation.*;
+
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 
+@JMMAName("Folder")
+@JMMAReqParm
 public class FolderServer {
+	
 	//上傳圖片
 	static public void uploadPhoto(List<FileItem> items, Connection conn) throws IOException{
 		String time = "";
@@ -285,6 +290,7 @@ public class FolderServer {
 	}
 	
 	//顯示影片
+	@JMMAMethod(method = "POST")
 	static public FileInputStream getVideo(String videoPath){
 		File downloadFile = new File(videoPath);
 		FileInputStream inputStream = null;
@@ -299,7 +305,8 @@ public class FolderServer {
 	}
 		
 	//顯示圖片
-	static public InputStream getPhoto(Connection conn, String patientID, String time){
+	@JMMAMethod(method = "POST")
+	static public InputStream getPhoto(@JMMAExc Connection conn, String patientID, String time){
 		PreparedStatement statement = null;
 		InputStream inputStream = null;
 		
@@ -335,7 +342,8 @@ public class FolderServer {
 	}
 	
 	//顯示縮圖
-	static public InputStream getSmallPhoto(Connection conn, String patientID, String time){
+	@JMMAMethod(method = "POST")
+	static public InputStream getSmallPhoto(@JMMAExc Connection conn, String patientID, String time){
 		PreparedStatement statement = null;
 		InputStream inputStream = null;
 		
@@ -400,7 +408,8 @@ public class FolderServer {
    }
 	
 	//編輯
-	static public String editPhoto(Connection conn, String patientID, String time, String description){
+	@JMMAMethod(method = "POST")
+	static public String editPhoto(@JMMAExc Connection conn, String patientID, String time, String description){
 		String sql = "UPDATE file SET description = ? WHERE patientID = ? AND time = ?";
 		PreparedStatement statement = null;
 		try {
@@ -420,7 +429,8 @@ public class FolderServer {
 	}
 	
 	//刪除照片
-	static public String deletePhoto(Connection conn, String patientID, String time){
+	@JMMAMethod(method = "POST")
+	static public String deletePhoto(@JMMAExc Connection conn, String patientID, String time){
 		String sql = "DELETE FROM file WHERE patientID = ? AND time = ?";
 		PreparedStatement statement = null;
 		try {
@@ -439,7 +449,8 @@ public class FolderServer {
 	}
 			
 	//取得特定檔案資訊
-	static public String getSelectFileInfo(Connection conn, String patientID, String time){
+	@JMMAMethod(method = "POST")
+	static public String getSelectFileInfo(@JMMAExc Connection conn, String patientID, String time){
 		String jsonString = "";
 		JSONArray fileArray = new JSONArray();
 		PreparedStatement statement = null;
@@ -494,7 +505,8 @@ public class FolderServer {
 	
 	/*******用到doctor的地方***********************************已改*****************************/
 	//取得病患所有檔案資訊
-	static public String getAllFileInfo(Connection conn, String patientID){		
+	@JMMAMethod(method = "POST")
+	static public String getAllFileInfo(@JMMAExc Connection conn, String patientID){		
 		String jsonString = "";
 		JSONArray FList = new JSONArray();
 		PreparedStatement statement = null;        
@@ -560,7 +572,8 @@ public class FolderServer {
 	}
 	
 	//取得特定醫生檔案資訊
-	public static String getDoctorFileInfo(Connection conn, String patientID, String doctorID){
+	@JMMAMethod(method = "POST")
+	public static String getDoctorFileInfo(@JMMAExc Connection conn, String patientID, String doctorID){
 		String jsonString = "";
 		JSONArray fileArray = new JSONArray();	
 		PreparedStatement statement = null;
